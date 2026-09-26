@@ -735,6 +735,168 @@ function checkout(){
 
 renderProducts();
 </script>
+<!-- CHECKOUT MODAL -->
+<div class="modal" id="checkoutModal">
+  <div class="modal-box">
 
+    <button class="close" onclick="closeModal('checkoutModal')">×</button>
+
+    <h2>Checkout</h2>
+
+    <input
+      id="customerName"
+      type="text"
+      placeholder="Full Name"
+    >
+
+    <input
+      id="customerPhone"
+      type="tel"
+      placeholder="Phone Number"
+    >
+
+    <textarea
+      id="customerAddress"
+      placeholder="Delivery Address"
+      style="width:100%;height:90px;padding:12px;margin:7px 0;border:1px solid #ccc;border-radius:7px;resize:none"
+    ></textarea>
+
+    <div style="margin:15px 0;padding:15px;background:#f5f5f5;border-radius:8px">
+
+      <p>
+        Subtotal:
+        <b id="checkoutSubtotal">৳0</b>
+      </p>
+
+      <p style="margin-top:8px">
+        Delivery:
+        <b id="checkoutDelivery">৳0</b>
+      </p>
+
+      <hr style="margin:12px 0">
+
+      <p style="font-size:20px">
+        Total:
+        <b id="checkoutTotal">৳0</b>
+      </p>
+
+    </div>
+
+    <h3 style="margin:15px 0 10px">
+      Payment Method
+    </h3>
+
+    <label style="display:block;margin:10px 0">
+      <input
+        type="radio"
+        name="paymentMethod"
+        value="COD"
+        checked
+      >
+      📦 Cash on Delivery
+    </label>
+
+    <p style="font-size:13px;color:#666;margin:10px 0">
+      Delivery charge may need to be paid in advance.
+    </p>
+
+    <button
+      class="btn"
+      style="width:100%"
+      onclick="placeOrder()"
+    >
+      Place Order
+    </button>
+
+  </div>
+</div>
+
+<script>
+
+function checkout(){
+
+  if(cart.length === 0){
+    alert("Your cart is empty.");
+    return;
+  }
+
+  let subtotal = cart.reduce(
+    (sum, product) => sum + product[3],
+    0
+  );
+
+  let delivery = subtotal >= 1500 ? 0 : 80;
+
+  document.getElementById("checkoutSubtotal").textContent =
+    "৳" + subtotal;
+
+  document.getElementById("checkoutDelivery").textContent =
+    delivery === 0 ? "FREE" : "৳" + delivery;
+
+  document.getElementById("checkoutTotal").textContent =
+    "৳" + (subtotal + delivery);
+
+  openModal("checkoutModal");
+}
+
+
+function placeOrder(){
+
+  let name =
+    document.getElementById("customerName").value.trim();
+
+  let phone =
+    document.getElementById("customerPhone").value.trim();
+
+  let address =
+    document.getElementById("customerAddress").value.trim();
+
+  if(!name){
+    alert("Please enter your name.");
+    return;
+  }
+
+  if(!phone){
+    alert("Please enter your phone number.");
+    return;
+  }
+
+  if(!address){
+    alert("Please enter your delivery address.");
+    return;
+  }
+
+  let subtotal = cart.reduce(
+    (sum, product) => sum + product[3],
+    0
+  );
+
+  let delivery = subtotal >= 1500 ? 0 : 80;
+
+  let total = subtotal + delivery;
+
+  let orderID =
+    "ALI-" + Date.now().toString().slice(-6);
+
+  alert(
+    "Order placed successfully! 🎉\n\n" +
+    "Order ID: " + orderID + "\n" +
+    "Customer: " + name + "\n" +
+    "Phone: " + phone + "\n" +
+    "Total: ৳" + total + "\n" +
+    "Payment: Cash on Delivery"
+  );
+
+  cart = [];
+
+  document.getElementById("cartCount").textContent = "0";
+
+  closeModal("checkoutModal");
+
+  renderCart();
+
+}
+
+</script>
 </body>
 </html>\
