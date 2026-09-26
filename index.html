@@ -898,5 +898,27 @@ function placeOrder(){
 }
 
 </script>
-</body>
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore-compat.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyC1cYSMgiliuEUU_cN8luiSG-FEHppdebM",
+    authDomain: "ali-fashion-e3bcf.firebaseapp.com",
+    projectId: "ali-fashion-e3bcf",
+    storageBucket: "ali-fashion-e3bcf.firebasestorage.app",
+    messagingSenderId: "688603219859",
+    appId: "1:688603219859:web:fb4c50e2c123cf1e50ca66",
+    measurementId: "G-1TQDYWP587"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+
+  const db = firebase.firestore();
+  const auth = firebase.auth();
+
+  console.log("🔥 Firebase connected!");
+</script></body>
 </html>
