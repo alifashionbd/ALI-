@@ -1,0 +1,1679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ALI | علي — Admin Panel</title>
+
+<style>
+:root{
+  --green:#063b2e;
+  --green2:#071d34;
+  --gold:#d4af37;
+  --cream:#f7f5ed;
+  --white:#fff;
+  --dark:#17221e;
+  --muted:#718078;
+  --border:#e5e8e5;
+  --danger:#c0392b;
+  --success:#218c5b;
+  --shadow:0 8px 25px rgba(0,0,0,.08);
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial, sans-serif;
+}
+
+body{
+  background:#f4f6f4;
+  color:var(--dark);
+}
+
+/* =========================
+   LOGIN SCREEN
+========================= */
+
+.login-screen{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,var(--green),var(--green2));
+}
+
+.login-box{
+  width:400px;
+  max-width:90%;
+  background:white;
+  padding:40px;
+  border-radius:18px;
+  box-shadow:0 20px 60px rgba(0,0,0,.25);
+}
+
+.logo{
+  text-align:center;
+  margin-bottom:30px;
+}
+
+.logo h1{
+  font-size:42px;
+  color:var(--green);
+  letter-spacing:2px;
+}
+
+.logo p{
+  color:var(--gold);
+  font-size:18px;
+  margin-top:5px;
+}
+
+.input-group{
+  margin-bottom:18px;
+}
+
+.input-group label{
+  display:block;
+  margin-bottom:7px;
+  font-weight:bold;
+}
+
+.input-group input,
+.input-group select,
+.input-group textarea{
+  width:100%;
+  padding:12px;
+  border:1px solid var(--border);
+  border-radius:8px;
+  outline:none;
+  font-size:14px;
+}
+
+.input-group input:focus,
+.input-group select:focus,
+.input-group textarea:focus{
+  border-color:var(--green);
+}
+
+.login-btn{
+  width:100%;
+  border:0;
+  background:var(--green);
+  color:white;
+  padding:13px;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:16px;
+  font-weight:bold;
+}
+
+.login-btn:hover{
+  background:#085542;
+}
+
+.login-error{
+  color:var(--danger);
+  text-align:center;
+  margin-top:12px;
+  display:none;
+}
+
+/* =========================
+   ADMIN LAYOUT
+========================= */
+
+.admin{
+  display:none;
+  min-height:100vh;
+}
+
+.sidebar{
+  width:250px;
+  background:var(--green);
+  color:white;
+  position:fixed;
+  left:0;
+  top:0;
+  bottom:0;
+  padding:25px 15px;
+}
+
+.sidebar-logo{
+  text-align:center;
+  padding:10px 0 30px;
+  border-bottom:1px solid rgba(255,255,255,.15);
+}
+
+.sidebar-logo h2{
+  font-size:30px;
+  letter-spacing:2px;
+}
+
+.sidebar-logo span{
+  color:var(--gold);
+}
+
+.menu{
+  margin-top:25px;
+}
+
+.menu button{
+  width:100%;
+  border:0;
+  background:transparent;
+  color:white;
+  text-align:left;
+  padding:14px 16px;
+  margin-bottom:6px;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:15px;
+}
+
+.menu button:hover,
+.menu button.active{
+  background:rgba(255,255,255,.12);
+}
+
+.logout{
+  position:absolute;
+  bottom:25px;
+  left:15px;
+  width:calc(100% - 30px);
+  padding:12px;
+  border:1px solid rgba(255,255,255,.3);
+  background:transparent;
+  color:white;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.main{
+  margin-left:250px;
+  padding:25px;
+}
+
+/* =========================
+   TOP BAR
+========================= */
+
+.topbar{
+  background:white;
+  padding:18px 22px;
+  border-radius:12px;
+  box-shadow:var(--shadow);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:25px;
+}
+
+.topbar h2{
+  color:var(--green);
+}
+
+.admin-user{
+  font-size:14px;
+  color:var(--muted);
+}
+
+/* =========================
+   SECTIONS
+========================= */
+
+.section{
+  display:none;
+}
+
+.section.active{
+  display:block;
+}
+
+.section-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.section-title h2{
+  color:var(--green);
+}
+
+.primary-btn{
+  background:var(--green);
+  color:white;
+  border:0;
+  padding:11px 17px;
+  border-radius:7px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.primary-btn:hover{
+  background:#085542;
+}
+
+/* =========================
+   DASHBOARD CARDS
+========================= */
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
+  margin-bottom:25px;
+}
+
+.card{
+  background:white;
+  padding:22px;
+  border-radius:12px;
+  box-shadow:var(--shadow);
+}
+
+.card .icon{
+  font-size:28px;
+  margin-bottom:12px;
+}
+
+.card h3{
+  font-size:14px;
+  color:var(--muted);
+  margin-bottom:8px;
+}
+
+.card strong{
+  font-size:27px;
+  color:var(--green);
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.table-box{
+  background:white;
+  border-radius:12px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+
+.table-scroll{
+  overflow-x:auto;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:700px;
+}
+
+th,td{
+  padding:14px 16px;
+  text-align:left;
+  border-bottom:1px solid var(--border);
+  font-size:14px;
+}
+
+th{
+  background:#f8faf8;
+  color:var(--green);
+}
+
+tr:hover td{
+  background:#fafcfa;
+}
+
+.product-img{
+  width:48px;
+  height:48px;
+  object-fit:cover;
+  border-radius:7px;
+}
+
+.status{
+  display:inline-block;
+  padding:5px 9px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:bold;
+}
+
+.pending{
+  background:#fff3cd;
+  color:#856404;
+}
+
+.confirmed{
+  background:#d4edda;
+  color:#155724;
+}
+
+.shipped{
+  background:#cce5ff;
+  color:#004085;
+}
+
+.delivered{
+  background:#d1ecf1;
+  color:#0c5460;
+}
+
+.cancelled{
+  background:#f8d7da;
+  color:#721c24;
+}
+
+.action-btn{
+  border:0;
+  padding:7px 10px;
+  border-radius:5px;
+  cursor:pointer;
+  margin-right:4px;
+}
+
+.edit{
+  background:#e7f0ff;
+  color:#2457a6;
+}
+
+.delete{
+  background:#ffe5e3;
+  color:var(--danger);
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  z-index:1000;
+}
+
+.modal.show{
+  display:flex;
+}
+
+.modal-box{
+  background:white;
+  width:600px;
+  max-width:100%;
+  max-height:90vh;
+  overflow-y:auto;
+  border-radius:15px;
+  padding:25px;
+}
+
+.modal-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:22px;
+}
+
+.modal-header h2{
+  color:var(--green);
+}
+
+.close{
+  background:none;
+  border:0;
+  font-size:26px;
+  cursor:pointer;
+}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
+
+.full{
+  grid-column:1/-1;
+}
+
+.save-btn{
+  width:100%;
+  background:var(--green);
+  color:white;
+  border:0;
+  padding:13px;
+  border-radius:8px;
+  font-weight:bold;
+  cursor:pointer;
+  margin-top:10px;
+}
+
+/* =========================
+   SEARCH
+========================= */
+
+.search-box{
+  margin-bottom:15px;
+}
+
+.search-box input{
+  width:100%;
+  max-width:350px;
+  padding:11px;
+  border:1px solid var(--border);
+  border-radius:7px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:1000px){
+
+  .cards{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+}
+
+@media(max-width:700px){
+
+  .sidebar{
+    width:70px;
+    padding:15px 8px;
+  }
+
+  .sidebar-logo h2{
+    font-size:20px;
+  }
+
+  .sidebar-logo small,
+  .menu button span{
+    display:none;
+  }
+
+  .menu button{
+    text-align:center;
+    padding:14px 5px;
+    font-size:20px;
+  }
+
+  .logout{
+    font-size:0;
+    text-align:center;
+  }
+
+  .logout::after{
+    content:"↪";
+    font-size:20px;
+  }
+
+  .main{
+    margin-left:70px;
+    padding:15px;
+  }
+
+  .cards{
+    grid-template-columns:1fr;
+  }
+
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+
+  .full{
+    grid-column:auto;
+  }
+
+  .topbar{
+    padding:15px;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<!-- =========================
+     LOGIN
+========================= -->
+
+<div class="login-screen" id="loginScreen">
+
+  <div class="login-box">
+
+    <div class="logo">
+      <h1>ALI</h1>
+      <p>علي</p>
+    </div>
+
+    <div class="input-group">
+      <label>Username</label>
+      <input type="text" id="username" placeholder="Enter username">
+    </div>
+
+    <div class="input-group">
+      <label>Password</label>
+      <input type="password" id="password" placeholder="Enter password">
+    </div>
+
+    <button class="login-btn" onclick="login()">
+      Login
+    </button>
+
+    <div class="login-error" id="loginError">
+      Invalid username or password
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================
+     ADMIN PANEL
+========================= -->
+
+<div class="admin" id="adminPanel">
+
+  <!-- SIDEBAR -->
+
+  <aside class="sidebar">
+
+    <div class="sidebar-logo">
+      <h2>ALI</h2>
+      <span>علي</span>
+    </div>
+
+    <div class="menu">
+
+      <button class="active" onclick="showSection('dashboard',this)">
+        📊 <span>Dashboard</span>
+      </button>
+
+      <button onclick="showSection('products',this)">
+        📦 <span>Products</span>
+      </button>
+
+      <button onclick="showSection('orders',this)">
+        🛒 <span>Orders</span>
+      </button>
+
+      <button onclick="showSection('stock',this)">
+        📋 <span>Stock</span>
+      </button>
+
+    </div>
+
+    <button class="logout" onclick="logout()">
+      Logout
+    </button>
+
+  </aside>
+
+
+  <!-- MAIN -->
+
+  <main class="main">
+
+    <div class="topbar">
+      <h2 id="pageTitle">Dashboard</h2>
+      <div class="admin-user">
+        👤 Admin
+      </div>
+    </div>
+
+
+    <!-- =========================
+         DASHBOARD
+    ========================= -->
+
+    <section class="section active" id="dashboard">
+
+      <div class="cards">
+
+        <div class="card">
+          <div class="icon">📦</div>
+          <h3>Total Products</h3>
+          <strong id="totalProducts">20</strong>
+        </div>
+
+        <div class="card">
+          <div class="icon">🛒</div>
+          <h3>Total Orders</h3>
+          <strong id="totalOrders">12</strong>
+        </div>
+
+        <div class="card">
+          <div class="icon">💰</div>
+          <h3>Total Sales</h3>
+          <strong id="totalSales">৳24,500</strong>
+        </div>
+
+        <div class="card">
+          <div class="icon">⚠️</div>
+          <h3>Low Stock</h3>
+          <strong id="lowStock">4</strong>
+        </div>
+
+      </div>
+
+
+      <div class="table-box">
+
+        <div style="padding:20px">
+          <h3>Recent Orders</h3>
+        </div>
+
+        <div class="table-scroll">
+
+          <table>
+
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Total</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+
+            <tbody id="recentOrders"></tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         PRODUCTS
+    ========================= -->
+
+    <section class="section" id="products">
+
+      <div class="section-title">
+
+        <h2>Products</h2>
+
+        <button class="primary-btn" onclick="openProductModal()">
+          + Add Product
+        </button>
+
+      </div>
+
+      <div class="search-box">
+        <input
+          type="text"
+          id="productSearch"
+          placeholder="Search products..."
+          oninput="renderProducts()"
+        >
+      </div>
+
+
+      <div class="table-box">
+
+        <div class="table-scroll">
+
+          <table>
+
+            <thead>
+
+              <tr>
+                <th>Image</th>
+                <th>Product</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Action</th>
+              </tr>
+
+            </thead>
+
+            <tbody id="productTable"></tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         ORDERS
+    ========================= -->
+
+    <section class="section" id="orders">
+
+      <div class="section-title">
+        <h2>Orders</h2>
+      </div>
+
+      <div class="table-box">
+
+        <div class="table-scroll">
+
+          <table>
+
+            <thead>
+
+              <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Phone</th>
+                <th>Total</th>
+                <th>Payment</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+
+            </thead>
+
+            <tbody id="ordersTable"></tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         STOCK
+    ========================= -->
+
+    <section class="section" id="stock">
+
+      <div class="section-title">
+        <h2>Stock Management</h2>
+      </div>
+
+      <div class="table-box">
+
+        <div class="table-scroll">
+
+          <table>
+
+            <thead>
+
+              <tr>
+                <th>Product</th>
+                <th>Category</th>
+                <th>Current Stock</th>
+                <th>Status</th>
+              </tr>
+
+            </thead>
+
+            <tbody id="stockTable"></tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+
+<!-- =========================
+     PRODUCT MODAL
+========================= -->
+
+<div class="modal" id="productModal">
+
+  <div class="modal-box">
+
+    <div class="modal-header">
+
+      <h2 id="modalTitle">Add Product</h2>
+
+      <button class="close" onclick="closeProductModal()">
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="form-grid">
+
+      <div class="input-group">
+
+        <label>Product Name</label>
+
+        <input type="text" id="productName">
+
+      </div>
+
+
+      <div class="input-group">
+
+        <label>Category</label>
+
+        <select id="productCategory">
+
+          <option>Shirt</option>
+          <option>T-Shirt</option>
+          <option>Pant</option>
+          <option>Jersey</option>
+          <option>Watch</option>
+          <option>Wallet</option>
+
+        </select>
+
+      </div>
+
+
+      <div class="input-group">
+
+        <label>Price (৳)</label>
+
+        <input
+          type="number"
+          id="productPrice"
+        >
+
+      </div>
+
+
+      <div class="input-group">
+
+        <label>Stock</label>
+
+        <input
+          type="number"
+          id="productStock"
+        >
+
+      </div>
+
+
+      <div class="input-group full">
+
+        <label>Image URL</label>
+
+        <input
+          type="text"
+          id="productImage"
+          placeholder="https://..."
+        >
+
+      </div>
+
+
+      <div class="input-group full">
+
+        <label>Description</label>
+
+        <textarea
+          id="productDescription"
+          rows="4"
+        ></textarea>
+
+      </div>
+
+    </div>
+
+
+    <button class="save-btn" onclick="saveProduct()">
+      Save Product
+    </button>
+
+  </div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   DEMO LOGIN
+========================= */
+
+function login(){
+
+  const username =
+    document.getElementById("username").value;
+
+  const password =
+    document.getElementById("password").value;
+
+  /*
+    DEMO LOGIN ONLY
+
+    Username:
+    admin
+
+    Password:
+    ali123
+  */
+
+  if(username === "admin" && password === "ali123"){
+
+    document.getElementById("loginScreen").style.display =
+      "none";
+
+    document.getElementById("adminPanel").style.display =
+      "block";
+
+    localStorage.setItem("aliAdminLoggedIn","true");
+
+    renderAll();
+
+  }else{
+
+    document.getElementById("loginError").style.display =
+      "block";
+
+  }
+
+}
+
+
+function logout(){
+
+  localStorage.removeItem("aliAdminLoggedIn");
+
+  location.reload();
+
+}
+
+
+/* =========================
+   SECTION SWITCH
+========================= */
+
+function showSection(sectionName,button){
+
+  document.querySelectorAll(".section")
+    .forEach(section=>{
+      section.classList.remove("active");
+    });
+
+  document.getElementById(sectionName)
+    .classList.add("active");
+
+  document.querySelectorAll(".menu button")
+    .forEach(btn=>{
+      btn.classList.remove("active");
+    });
+
+  button.classList.add("active");
+
+  const titles = {
+    dashboard:"Dashboard",
+    products:"Products",
+    orders:"Orders",
+    stock:"Stock Management"
+  };
+
+  document.getElementById("pageTitle").innerText =
+    titles[sectionName];
+
+}
+
+
+/* =========================
+   DEMO PRODUCTS
+========================= */
+
+let products = [
+
+  {
+    id:1,
+    name:"Premium Black Shirt",
+    category:"Shirt",
+    price:1290,
+    stock:15,
+    image:"https://via.placeholder.com/100",
+    description:"Premium men's black shirt"
+  },
+
+  {
+    id:2,
+    name:"Classic White T-Shirt",
+    category:"T-Shirt",
+    price:790,
+    stock:25,
+    image:"https://via.placeholder.com/100",
+    description:"Classic cotton t-shirt"
+  },
+
+  {
+    id:3,
+    name:"Slim Fit Black Pant",
+    category:"Pant",
+    price:1490,
+    stock:8,
+    image:"https://via.placeholder.com/100",
+    description:"Slim fit men's pant"
+  },
+
+  {
+    id:4,
+    name:"Bangladesh Football Jersey",
+    category:"Jersey",
+    price:990,
+    stock:4,
+    image:"https://via.placeholder.com/100",
+    description:"Football jersey"
+  },
+
+  {
+    id:5,
+    name:"Classic Leather Wallet",
+    category:"Wallet",
+    price:650,
+    stock:2,
+    image:"https://via.placeholder.com/100",
+    description:"Premium leather wallet"
+  }
+
+];
+
+
+/* =========================
+   DEMO ORDERS
+========================= */
+
+let orders = [
+
+  {
+    id:"ALI-1001",
+    customer:"Rahim",
+    phone:"01700000000",
+    total:2490,
+    payment:"COD",
+    status:"Pending"
+  },
+
+  {
+    id:"ALI-1002",
+    customer:"Karim",
+    phone:"01800000000",
+    total:1590,
+    payment:"COD",
+    status:"Confirmed"
+  },
+
+  {
+    id:"ALI-1003",
+    customer:"Hasan",
+    phone:"01900000000",
+    total:2990,
+    payment:"COD",
+    status:"Shipped"
+  }
+
+];
+
+
+/* =========================
+   RENDER PRODUCTS
+========================= */
+
+function renderProducts(){
+
+  const table =
+    document.getElementById("productTable");
+
+  const search =
+    document.getElementById("productSearch")
+      .value
+      .toLowerCase();
+
+  table.innerHTML = "";
+
+  products
+    .filter(product =>
+      product.name.toLowerCase().includes(search)
+    )
+    .forEach(product=>{
+
+      const row =
+        document.createElement("tr");
+
+      row.innerHTML = `
+
+        <td>
+          <img
+            class="product-img"
+            src="${product.image}"
+            onerror="this.src='https://via.placeholder.com/100'"
+          >
+        </td>
+
+        <td>
+          <strong>${product.name}</strong>
+        </td>
+
+        <td>${product.category}</td>
+
+        <td>৳${product.price}</td>
+
+        <td>${product.stock}</td>
+
+        <td>
+
+          <button
+            class="action-btn edit"
+            onclick="editProduct(${product.id})"
+          >
+            Edit
+          </button>
+
+          <button
+            class="action-btn delete"
+            onclick="deleteProduct(${product.id})"
+          >
+            Delete
+          </button>
+
+        </td>
+
+      `;
+
+      table.appendChild(row);
+
+    });
+
+}
+
+
+/* =========================
+   ADD PRODUCT
+========================= */
+
+let editingProductId = null;
+
+
+function openProductModal(){
+
+  editingProductId = null;
+
+  document.getElementById("modalTitle").innerText =
+    "Add Product";
+
+  clearProductForm();
+
+  document.getElementById("productModal")
+    .classList.add("show");
+
+}
+
+
+function closeProductModal(){
+
+  document.getElementById("productModal")
+    .classList.remove("show");
+
+}
+
+
+function clearProductForm(){
+
+  document.getElementById("productName").value = "";
+  document.getElementById("productPrice").value = "";
+  document.getElementById("productStock").value = "";
+  document.getElementById("productImage").value = "";
+  document.getElementById("productDescription").value = "";
+
+}
+
+
+function saveProduct(){
+
+  const name =
+    document.getElementById("productName").value.trim();
+
+  const category =
+    document.getElementById("productCategory").value;
+
+  const price =
+    Number(document.getElementById("productPrice").value);
+
+  const stock =
+    Number(document.getElementById("productStock").value);
+
+  const image =
+    document.getElementById("productImage").value.trim()
+    || "https://via.placeholder.com/100";
+
+  const description =
+    document.getElementById("productDescription").value.trim();
+
+
+  if(!name || !price){
+
+    alert("Please enter product name and price.");
+
+    return;
+
+  }
+
+
+  if(editingProductId){
+
+    const product =
+      products.find(p => p.id === editingProductId);
+
+    product.name = name;
+    product.category = category;
+    product.price = price;
+    product.stock = stock;
+    product.image = image;
+    product.description = description;
+
+  }else{
+
+    products.push({
+
+      id:Date.now(),
+
+      name:name,
+
+      category:category,
+
+      price:price,
+
+      stock:stock,
+
+      image:image,
+
+      description:description
+
+    });
+
+  }
+
+
+  closeProductModal();
+
+  renderAll();
+
+}
+
+
+/* =========================
+   EDIT PRODUCT
+========================= */
+
+function editProduct(id){
+
+  const product =
+    products.find(p => p.id === id);
+
+  if(!product) return;
+
+  editingProductId = id;
+
+  document.getElementById("modalTitle").innerText =
+    "Edit Product";
+
+  document.getElementById("productName").value =
+    product.name;
+
+  document.getElementById("productCategory").value =
+    product.category;
+
+  document.getElementById("productPrice").value =
+    product.price;
+
+  document.getElementById("productStock").value =
+    product.stock;
+
+  document.getElementById("productImage").value =
+    product.image;
+
+  document.getElementById("productDescription").value =
+    product.description;
+
+  document.getElementById("productModal")
+    .classList.add("show");
+
+}
+
+
+/* =========================
+   DELETE PRODUCT
+========================= */
+
+function deleteProduct(id){
+
+  const product =
+    products.find(p => p.id === id);
+
+  if(!product) return;
+
+  const confirmed =
+    confirm(
+      `Delete "${product.name}"?`
+    );
+
+  if(!confirmed) return;
+
+  products =
+    products.filter(p => p.id !== id);
+
+  renderAll();
+
+}
+
+
+/* =========================
+   ORDERS
+========================= */
+
+function renderOrders(){
+
+  const table =
+    document.getElementById("ordersTable");
+
+  table.innerHTML = "";
+
+  orders.forEach(order=>{
+
+    const row =
+      document.createElement("tr");
+
+    row.innerHTML = `
+
+      <td>
+        <strong>${order.id}</strong>
+      </td>
+
+      <td>${order.customer}</td>
+
+      <td>${order.phone}</td>
+
+      <td>৳${order.total}</td>
+
+      <td>${order.payment}</td>
+
+      <td>
+
+        <select
+          onchange="changeOrderStatus('${order.id}',this.value)"
+          style="padding:6px;border-radius:5px;border:1px solid #ddd"
+        >
+
+          <option ${order.status==="Pending"?"selected":""}>
+            Pending
+          </option>
+
+          <option ${order.status==="Confirmed"?"selected":""}>
+            Confirmed
+          </option>
+
+          <option ${order.status==="Shipped"?"selected":""}>
+            Shipped
+          </option>
+
+          <option ${order.status==="Delivered"?"selected":""}>
+            Delivered
+          </option>
+
+          <option ${order.status==="Cancelled"?"selected":""}>
+            Cancelled
+          </option>
+
+        </select>
+
+      </td>
+
+      <td>
+
+        <button
+          class="action-btn delete"
+          onclick="deleteOrder('${order.id}')"
+        >
+          Delete
+        </button>
+
+      </td>
+
+    `;
+
+    table.appendChild(row);
+
+  });
+
+}
+
+
+function changeOrderStatus(id,status){
+
+  const order =
+    orders.find(o => o.id === id);
+
+  if(order){
+
+    order.status = status;
+
+    renderOrders();
+    renderRecentOrders();
+
+  }
+
+}
+
+
+function deleteOrder(id){
+
+  if(!confirm("Delete this order?")) return;
+
+  orders =
+    orders.filter(order => order.id !== id);
+
+  renderOrders();
+  renderRecentOrders();
+  updateDashboard();
+
+}
+
+
+/* =========================
+   RECENT ORDERS
+========================= */
+
+function renderRecentOrders(){
+
+  const table =
+    document.getElementById("recentOrders");
+
+  table.innerHTML = "";
+
+  orders.slice(0,5).forEach(order=>{
+
+    const row =
+      document.createElement("tr");
+
+    const statusClass =
+      order.status.toLowerCase();
+
+    row.innerHTML = `
+
+      <td>${order.id}</td>
+
+      <td>${order.customer}</td>
+
+      <td>৳${order.total}</td>
+
+      <td>
+        <span class="status ${statusClass}">
+          ${order.status}
+        </span>
+      </td>
+
+    `;
+
+    table.appendChild(row);
+
+  });
+
+}
+
+
+/* =========================
+   STOCK
+========================= */
+
+function renderStock(){
+
+  const table =
+    document.getElementById("stockTable");
+
+  table.innerHTML = "";
+
+  products.forEach(product=>{
+
+    let status = "";
+
+    if(product.stock <= 0){
+      status = `
+        <span class="status cancelled">
+          Out of Stock
+        </span>
+      `;
+    }
+
+    else if(product.stock <= 5){
+      status = `
+        <span class="status pending">
+          Low Stock
+        </span>
+      `;
+    }
+
+    else{
+      status = `
+        <span class="status confirmed">
+          In Stock
+        </span>
+      `;
+    }
+
+    const row =
+      document.createElement("tr");
+
+    row.innerHTML = `
+
+      <td>${product.name}</td>
+
+      <td>${product.category}</td>
+
+      <td>${product.stock}</td>
+
+      <td>${status}</td>
+
+    `;
+
+    table.appendChild(row);
+
+  });
+
+}
+
+
+/* =========================
+   DASHBOARD
+========================= */
+
+function updateDashboard(){
+
+  document.getElementById("totalProducts")
+    .innerText = products.length;
+
+  document.getElementById("totalOrders")
+    .innerText = orders.length;
+
+
+  const sales =
+    orders
+      .filter(o => o.status !== "Cancelled")
+      .reduce(
+        (sum,o) => sum + o.total,
+        0
+      );
+
+  document.getElementById("totalSales")
+    .innerText = "৳" + sales.toLocaleString();
+
+
+  const lowStock =
+    products.filter(
+      p => p.stock <= 5
+    ).length;
+
+  document.getElementById("lowStock")
+    .innerText = lowStock;
+
+}
+
+
+/* =========================
+   RENDER EVERYTHING
+========================= */
+
+function renderAll(){
+
+  renderProducts();
+
+  renderOrders();
+
+  renderStock();
+
+  renderRecentOrders();
+
+  updateDashboard();
+
+}
+
+
+/* =========================
+   AUTO LOGIN CHECK
+========================= */
+
+window.addEventListener("load",()=>{
+
+  if(
+    localStorage.getItem("aliAdminLoggedIn")
+    === "true"
+  ){
+
+    document.getElementById("loginScreen")
+      .style.display = "none";
+
+    document.getElementById("adminPanel")
+      .style.display = "block";
+
+    renderAll();
+
+  }
+
+});
+
+</script>
+
+</body>
+</html>
