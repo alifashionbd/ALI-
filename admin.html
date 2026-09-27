@@ -968,17 +968,23 @@ function login(){
     ali123
   */
 
-  if(username === "admin" && password === "ali123"){
+  auth.signInWithEmailAndPassword(username, password)
+  .then((userCredential) => {
 
-    document.getElementById("loginScreen").style.display =
-      "none";
+    document.getElementById("loginScreen").style.display = "none";
 
-    document.getElementById("adminPanel").style.display =
-      "block";
+    document.getElementById("adminPanel").style.display = "block";
 
-    localStorage.setItem("aliAdminLoggedIn","true");
+    localStorage.setItem("aliAdminLoggedIn", "true");
 
     renderAll();
+
+  })
+  .catch((error) => {
+
+    alert("Login failed: " + error.message);
+
+  });
 
   }else{
 
