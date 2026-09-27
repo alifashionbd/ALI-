@@ -1091,7 +1091,38 @@ let products = [
   }
 
 ];
+// =========================
+// LOAD PRODUCTS FROM FIREBASE
+// =========================
 
+async function loadProductsFromFirebase(){
+
+  try{
+
+    const snapshot = await db.collection("products").get();
+
+    products = [];
+
+    snapshot.forEach(doc => {
+
+      products.push({
+        id: doc.id,
+        ...doc.data()
+      });
+
+    });
+
+    renderProducts();
+
+    console.log("Products loaded from Firebase:", products);
+
+  }catch(error){
+
+    console.error("Firebase product loading failed:", error);
+
+  }
+
+}
 
 /* =========================
    DEMO ORDERS
@@ -1638,8 +1669,7 @@ function updateDashboard(){
 
 function renderAll(){
 
-  renderProducts();
-
+loadProductsFromFirebase();
   renderOrders();
 
   renderStock();
