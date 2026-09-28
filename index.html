@@ -920,5 +920,13 @@ function placeOrder(){
   const auth = firebase.auth();
 
   console.log("🔥 Firebase connected!");
+    // Load products from Firebase
+  db.collection("products").get()
+    .then((snapshot) => {
+      console.log("Firebase products:", snapshot.docs.map(doc => doc.data()));
+    })
+    .catch((error) => {
+      console.error("Product loading error:", error);
+    });
 </script></body>
 </html>
