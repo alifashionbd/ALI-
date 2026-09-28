@@ -1273,7 +1273,7 @@ function clearProductForm(){
 }
 
 
-function saveProduct(){
+async function saveProduct(){
 
   const name =
     document.getElementById("productName").value.trim();
@@ -1304,44 +1304,51 @@ function saveProduct(){
   }
 
 
-  if(editingProductId){
+  try{
 
-    const product =
-      products.find(p => p.id === editingProductId);
+    const productData = {
+      name: name,
+      category: category,
+      price: price,
+      stock: stock,
+      image: image,
+      description: description
+    };
 
-    product.name = name;
-    product.category = category;
-    product.price = price;
-    product.stock = stock;
-    product.image = image;
-    product.description = description;
 
-  }else{
+    if(editingProductId){
 
-    products.push({
+      await db
+        .collection("products")
+        .doc(String(editingProductId))
+        .update(productData);
 
-      id:Date.now(),
+    }else{
 
-      name:name,
+      await db
+        .collection("products")
+        .add(productData);
 
-      category:category,
+    }
 
-      price:price,
 
-      stock:stock,
+    alert("Product saved successfully!");
 
-      image:image,
 
-      description:description
+    closeProductModal();
 
-    });
+    await loadProductsFromFirebase();
+
+    renderAll();
+
+
+  }catch(error){
+
+    console.error("Product save failed:", error);
+
+    alert("Failed to save product: " + error.message);
 
   }
-
-
-  closeProductModal();
-
-  renderAll();
 
 }
 
