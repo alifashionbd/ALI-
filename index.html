@@ -618,17 +618,26 @@ let products=[
 let cart=[];
 
 function productCard(p,i){
-  let discount=Math.round((1-p[3]/p[2])*100);
+  let name = Array.isArray(p) ? p[0] : p.name;
+  let category = Array.isArray(p) ? p[1] : p.category;
+  let oldPrice = Array.isArray(p) ? p[2] : (p.oldPrice || p.price);
+  let price = Array.isArray(p) ? p[3] : p.price;
+  let image = Array.isArray(p) ? p[4] : p.image;
+
+  let discount = oldPrice > price
+    ? Math.round((1 - price / oldPrice) * 100)
+    : 0;
+
   return `
   <div class="card">
-    <img src="${p[4]}" alt="${p[0]}">
+    <img src="${image}" alt="${name}">
     <div class="card-body">
-      <span class="badge">${discount}% OFF</span>
-      <h3>${p[0]}</h3>
-      <small>${p[1]}</small>
+      ${discount > 0 ? `<span class="badge">${discount}% OFF</span>` : ""}
+      <h3>${name}</h3>
+      <small>${category}</small>
       <div>
-        <span class="old">৳${p[2]}</span>
-        <span class="price">৳${p[3]}</span>
+        ${oldPrice > price ? `<span class="old">৳${oldPrice}</span>` : ""}
+        <span class="price">৳${price}</span>
       </div>
       <button onclick="addCart(${i})">Add to Cart</button>
     </div>
@@ -921,12 +930,23 @@ function placeOrder(){
 
   console.log("🔥 Firebase connected!");
     // Load products from Firebase
-  db.collection("products").get()
-    .then((snapshot) => {
-      console.log("Firebase products:", snapshot.docs.map(doc => doc.data()));
-    })
-    .catch((error) => {
-      console.error("Product loading error:", error);
+ db.collection("products").get()
+  .then((snapshot) => {
+    products = snapshot.docs.map(doc => {
+      const p = doc.data();
+      return [
+        p.name,
+        p.category,
+        p.oldPrice || p.price,
+        p.price,
+        p.image
+      ];
     });
+
+    renderProducts();
+  })
+  .catch((error) => {
+    console.error("Product loading error:", error);
+  });
 </script></body>
 </html>
